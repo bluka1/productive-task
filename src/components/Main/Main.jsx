@@ -5,13 +5,14 @@ import { format } from 'date-fns';
 import InputForm from '../InputForm/InputForm';
 import GridHeader from './GridHeader/GridHeader';
 import GridItem from './GridItem/GridItem';
+import { fetcher } from '../../utils/fetcher';
 
 import styles from './Main.module.css';
-import { fetcher } from '../../utils/fetcher';
 
 const Main = () => {
 	const [personId, setPersonId] = useState();
 	const [timeEntries, setTimeEntries] = useState();
+	const [updating, setUpdating] = useState(false);
 
 	const submitHandler = (e, note, time) => {
 		e.preventDefault();
@@ -64,6 +65,7 @@ const Main = () => {
 	};
 
 	const fetchTimeEntries = useCallback(() => {
+		setUpdating(true);
 		fetcher(
 			`time_entries?id=${personId}&filter[after]=${format(
 				new Date(),
@@ -71,6 +73,8 @@ const Main = () => {
 			)}&filter[before]=${format(new Date(), 'yyyy-MM-dd')}`,
 		)
 			.then((data) => {
+				setUpdating(false);
+
 				const projectObj = data.included.filter((i) => i.id === '203968');
 				setTimeEntries(
 					data.data.map(({ id, attributes, relationships }) => {
@@ -93,9 +97,10 @@ const Main = () => {
 					}),
 				);
 			})
-			.catch((error) =>
-				toast.error('Error while fetching time entries...', error),
-			);
+			.catch((error) => {
+				toast.error('Error while fetching time entries...', error);
+				setUpdating(false);
+			});
 	}, [personId]);
 
 	const fetchOrgMemberships = useCallback(() => {
@@ -118,14 +123,13 @@ const Main = () => {
 			<InputForm onSubmit={submitHandler} />
 			<div className={styles.gridContainer}>
 				<GridHeader />
-				{timeEntries ? (
+				{(!timeEntries || updating) && <p>Loading...</p>}
+				{timeEntries && (
 					<>
 						{timeEntries.map((item) => (
 							<GridItem key={item.id} item={item} onClick={deleteEntry} />
 						))}
 					</>
-				) : (
-					<p>Loading...</p>
 				)}
 			</div>
 		</>

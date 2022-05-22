@@ -1,11 +1,12 @@
 import React from 'react';
+
 import styles from './GridItem.module.css';
 
 const GridItem = ({ item, onClick }) => {
-	let parser = new DOMParser();
 	let itemNote;
 	if (item.note) {
-		itemNote = parser.parseFromString(item.note, 'text/html');
+		itemNote = new DOMParser().parseFromString(item.note, 'text/html');
+		itemNote = itemNote.documentElement.textContent;
 	}
 	return (
 		<div className={styles.gridItem} key={item.id}>
@@ -15,7 +16,7 @@ const GridItem = ({ item, onClick }) => {
 			<p>{item.service}</p>
 			<p>
 				{item.note ? (
-					`${itemNote.documentElement.textContent}`
+					`${itemNote}`
 				) : (
 					<span className={styles.noNote}>No note added</span>
 				)}
