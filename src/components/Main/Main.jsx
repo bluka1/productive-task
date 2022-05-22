@@ -79,16 +79,16 @@ const Main = () => {
 	};
 
 	const fetchServices = useCallback(() => {
-		fetcher('services').then((data) => {
+		fetcher('services').then(({ data, included }) => {
 			setServices(
-				data.data.map((service) => {
+				data.map((service) => {
 					return {
 						id: service.id,
 						name: service.attributes.name,
 					};
 				}),
 			);
-			setProjects(data.included.filter((i) => i.type === 'projects'));
+			setProjects(included.filter((i) => i.type === 'projects'));
 		});
 	}, []);
 
