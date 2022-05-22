@@ -83,3 +83,10 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
 	-moz-appearance: textfield;
 }
+
+.select {
+	width: 100%;
+	outline: none;
+	border: none;
+	background-color: inherit;
+}

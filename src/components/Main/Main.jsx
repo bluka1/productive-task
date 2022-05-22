@@ -10,11 +10,14 @@ import { fetcher } from '../../utils/fetcher';
 import styles from './Main.module.css';
 
 const Main = () => {
+	console.log('rendermain');
 	const [personId, setPersonId] = useState();
 	const [timeEntries, setTimeEntries] = useState();
 	const [updating, setUpdating] = useState(false);
+	const [projects, setProjects] = useState();
+	const [services, setServices] = useState();
 
-	const submitHandler = (e, note, time) => {
+	const submitHandler = (e, note, time, project, service) => {
 		e.preventDefault();
 
 		if (!note && !time) {
@@ -36,13 +39,19 @@ const Main = () => {
 						person: {
 							data: {
 								type: 'people',
-								id: '271353',
+								id: personId,
 							},
 						},
 						service: {
 							data: {
 								type: 'services',
-								id: '1686067',
+								id: service,
+							},
+						},
+						project: {
+							data: {
+								type: 'projects',
+								id: project,
 							},
 						},
 					},
@@ -69,6 +78,20 @@ const Main = () => {
 			.catch((error) => toast.error('Error while deleting item', error));
 	};
 
+	const fetchServices = useCallback(() => {
+		fetcher('services').then((data) => {
+			setServices(
+				data.data.map((service) => {
+					return {
+						id: service.id,
+						name: service.attributes.name,
+					};
+				}),
+			);
+			setProjects(data.included.filter((i) => i.type === 'projects'));
+		});
+	}, []);
+
 	const fetchTimeEntries = useCallback(() => {
 		setUpdating(true);
 		fetcher(
@@ -80,7 +103,6 @@ const Main = () => {
 			.then((data) => {
 				setUpdating(false);
 
-				const projectObj = data.included.filter((i) => i.id === '203968');
 				setTimeEntries(
 					data.data.map(({ id, attributes, relationships }) => {
 						const { note, time, date } = attributes;
@@ -90,6 +112,11 @@ const Main = () => {
 						const serviceObj = data.included.filter(
 							(i) => i.id === relationships.service.data.id,
 						);
+						const dealsObj = data.included.filter(
+							(i) => i.id === serviceObj[0].relationships.deal.data.id,
+						);
+						const projectId = dealsObj[0].relationships.project.data.id;
+						const projectObj = data.included.filter((i) => i.id === projectId);
 						return {
 							id,
 							note,
@@ -98,6 +125,7 @@ const Main = () => {
 							person: `${personObj[0].attributes.first_name} ${personObj[0].attributes.last_name}`,
 							project: projectObj[0].attributes.name,
 							service: serviceObj[0].attributes.name,
+							deal: dealsObj[0].attributes.name,
 						};
 					}),
 				);
@@ -121,11 +149,16 @@ const Main = () => {
 
 	useEffect(() => {
 		fetchOrgMemberships();
-	}, [fetchOrgMemberships]);
+		fetchServices();
+	}, [fetchOrgMemberships, fetchServices]);
 
 	return (
 		<>
-			<InputForm onSubmit={submitHandler} />
+			<InputForm
+				onSubmit={submitHandler}
+				projects={projects}
+				services={services}
+			/>
 			<div className={styles.gridContainer}>
 				<GridHeader />
 				{(!timeEntries || updating) && <p>Loading...</p>}

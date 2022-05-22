@@ -3,7 +3,7 @@ import { timeFormatter } from '../../utils/timeFormatter';
 
 import styles from './InputForm.module.css';
 
-const InputForm = ({ onSubmit }) => {
+const InputForm = ({ onSubmit, projects, services }) => {
 	const [time, setTime] = useState();
 	const projectRef = useRef();
 	const serviceRef = useRef();
@@ -14,10 +14,18 @@ const InputForm = ({ onSubmit }) => {
 		setTime(timeRef.current.value);
 	};
 
+	console.log('renderform');
 	return (
 		<form
 			onSubmit={(e) => {
-				onSubmit(e, noteRef.current.value, timeRef.current.value);
+				e.preventDefault();
+				onSubmit(
+					e,
+					noteRef.current.value,
+					timeRef.current.value,
+					projectRef.current.value,
+					serviceRef.current.value,
+				);
 				timeRef.current.value = '';
 				noteRef.current.value = '';
 				setTime(0);
@@ -25,22 +33,26 @@ const InputForm = ({ onSubmit }) => {
 			className={styles.form}
 		>
 			<div className={styles.inputContainer}>
-				<input
-					className={`${styles.input} ${styles.readonlyInput}`}
-					type="text"
-					value="Project: Retainer [SAMPLE]"
-					ref={projectRef}
-					readOnly
-				/>
+				{projects && (
+					<select className={styles.select} ref={projectRef}>
+						{projects.map((item) => (
+							<option key={item.id} value={item.id}>
+								{item.attributes.name}
+							</option>
+						))}
+					</select>
+				)}
 			</div>
 			<div className={styles.inputContainer}>
-				<input
-					className={`${styles.input} ${styles.readonlyInput}`}
-					type="text"
-					value="Service: Development"
-					ref={serviceRef}
-					readOnly
-				/>
+				{services && (
+					<select className={styles.select} ref={serviceRef}>
+						{services.map((item) => (
+							<option key={item.id} value={item.id}>
+								{item.name}
+							</option>
+						))}
+					</select>
+				)}
 			</div>
 			<div className={styles.inputContainer}>
 				<input
