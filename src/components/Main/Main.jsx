@@ -17,6 +17,11 @@ const Main = () => {
 	const submitHandler = (e, note, time) => {
 		e.preventDefault();
 
+		if (!note && !time) {
+			toast.error('Enter time (and note).');
+			return;
+		}
+
 		fetcher(`time_entries`, {
 			method: 'POST',
 			body: {

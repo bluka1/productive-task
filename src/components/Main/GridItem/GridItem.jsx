@@ -1,4 +1,5 @@
 import React from 'react';
+import { timeFormatter } from '../../../utils/timeFormatter';
 
 import styles from './GridItem.module.css';
 
@@ -21,7 +22,7 @@ const GridItem = ({ item, onClick }) => {
 					<span className={styles.noNote}>No note added</span>
 				)}
 			</p>
-			<p>{item.time} min</p>
+			<p>{timeFormatter(item.time)}</p>
 			<button className={styles.deleteButton} onClick={() => onClick(item.id)}>
 				X
 			</button>

@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { timeFormatter } from '../../utils/timeFormatter';
 
 import styles from './InputForm.module.css';
 
@@ -19,6 +20,7 @@ const InputForm = ({ onSubmit }) => {
 				onSubmit(e, noteRef.current.value, timeRef.current.value);
 				timeRef.current.value = '';
 				noteRef.current.value = '';
+				setTime(0);
 			}}
 			className={styles.form}
 		>
@@ -43,12 +45,15 @@ const InputForm = ({ onSubmit }) => {
 			<div className={styles.inputContainer}>
 				<input
 					type="number"
+					min={1}
 					placeholder="Time in minutes"
 					className={styles.input}
 					ref={timeRef}
 					onChange={changeTimeHandler}
 				/>
-				<span className={styles.minutes}>= {time ? time : 0} min</span>
+				<span className={styles.minutes}>
+					= {time ? timeFormatter(time) : '0 min'}
+				</span>
 			</div>
 			<div className={styles.inputContainer}>
 				<input
@@ -58,7 +63,9 @@ const InputForm = ({ onSubmit }) => {
 					ref={noteRef}
 				/>
 			</div>
-			<button className={styles.button}>Save</button>
+			<div className={styles.buttonContainer}>
+				<button className={styles.button}>Save</button>
+			</div>
 		</form>
 	);
 };
