@@ -1,0 +1,10 @@
+header > .title {
+	text-transform: uppercase;
+	font-size: 30px;
+	text-align: center;
+	margin: 20px 0;
+}
+
+.today {
+	text-align: center;
+}

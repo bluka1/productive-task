@@ -1,0 +1,9 @@
+.gridHeader {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 30px;
+	padding: 20px 25px;
+	border-radius: 4px;
+	background-color: rgba(93, 43, 255, 0.1);
+	font-weight: bold;
+	text-transform: uppercase;
+}

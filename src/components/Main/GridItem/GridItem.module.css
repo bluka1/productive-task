@@ -1,0 +1,31 @@
+.gridItem {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 30px;
+	padding: 20px 25px;
+	border: 1px solid lightgray;
+	border-radius: 4px;
+	align-items: center;
+}
+
+.noNote {
+	color: lightgray;
+}
+
+.deleteButton {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: bold;
+	outline: none;
+	border: none;
+	color: red;
+	border: 1px solid red;
+	border-radius: 50%;
+	padding: 6px 12px;
+	cursor: pointer;
+}
+
+.deleteButton:hover {
+	background-color: red;
+	color: white;
+}

@@ -1,0 +1,77 @@
+.form {
+	margin: 20px auto;
+	padding: 20px;
+	border: 1px solid lightgray;
+	border-radius: 4px;
+	width: 80%;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 10px;
+}
+
+.inputContainer {
+	border: 1px solid lightgray;
+	display: flex;
+	align-items: center;
+	padding: 8px;
+	border-radius: 4px;
+}
+
+.input {
+	outline: none;
+	border: none;
+	padding: 8px 16px 8px 4px;
+	font-size: 14px;
+	background-color: whitesmoke;
+	flex: 1;
+}
+
+.inputContainer:hover {
+	background-color: #f3efff;
+}
+
+.inputContainer:hover > .input {
+	background-color: #f3efff;
+}
+
+.input:focus {
+	background-color: #f3efff;
+}
+
+.input:focus > .inputContainer {
+	background-color: #f3efff;
+}
+
+.readonlyInput {
+	cursor: not-allowed;
+}
+
+.minutes {
+	font-size: 14px;
+	color: gray;
+}
+
+.button {
+	background-color: #5d2bff;
+	outline: none;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	width: 100px;
+	font-size: 20px;
+}
+
+.button:hover {
+	background-color: #2600a1;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input[type='number'] {
+	-moz-appearance: textfield;
+}
