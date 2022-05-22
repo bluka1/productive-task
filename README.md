@@ -1,3 +1,3 @@
 # Productive task
 
-This repo is a result of my solution for frontend engineer job application.
+This repo is a result of my solution for the frontend engineer job application task.
