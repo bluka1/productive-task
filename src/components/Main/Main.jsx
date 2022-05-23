@@ -80,7 +80,7 @@ const Main = () => {
 			.then((data) => {
 				setUpdating(false);
 
-				const projectObj = data.included.filter((i) => i.id === '203968');
+				const projectObj = data.included?.filter((i) => i.id === '203968');
 				setTimeEntries(
 					data.data.map(({ id, attributes, relationships }) => {
 						const { note, time, date } = attributes;
@@ -103,6 +103,7 @@ const Main = () => {
 				);
 			})
 			.catch((error) => {
+				console.log(error);
 				toast.error('Error while fetching time entries...', error);
 				setUpdating(false);
 			});
@@ -129,6 +130,7 @@ const Main = () => {
 			<div className={styles.gridContainer}>
 				<GridHeader />
 				{(!timeEntries || updating) && <p>Loading...</p>}
+				{timeEntries?.length === 0 && <p>No time entries.</p>}
 				{timeEntries && (
 					<>
 						{timeEntries.map((item) => (
